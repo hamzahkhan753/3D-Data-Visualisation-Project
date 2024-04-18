@@ -50,6 +50,7 @@ namespace Assets.Data_Classes
                 Band_Names = dataPoint_Model.Band_Names;
                 Band_Values = dataPoint_Model.Band_Values;
                 Band_Order = new List<int> { 3, 0, 4, 5, 1, 6, 7, 8, 2, 9 };
+                //Band_Order = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
             }
         }
 
