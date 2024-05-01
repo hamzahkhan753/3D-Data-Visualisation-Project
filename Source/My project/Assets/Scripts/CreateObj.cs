@@ -196,17 +196,19 @@ public class CreateObj : MonoBehaviour
                 throw new ArgumentException("The data file does not have enough headers necessary for 3D visualisation.");
             }
 
-            DataControlCanvas.enabled = false;
-            DataLoadCanvas.enabled = true;
+            //DataControlCanvas.enabled = false;
+            //DataLoadCanvas.enabled = true;
 
             TMP_Dropdown[] Data_Dropdowns = DataLoadCanvas.transform.GetChild(0).GetComponentsInChildren<TMP_Dropdown>();
 
             foreach (TMP_Dropdown dd in Data_Dropdowns)
             {
+                dd.options.Clear();
                 dd.AddOptions(headers);
+                dd.value = 0;
             }
 
-            // Clear toggle objects in dropdown so no duplicates or old data are loaded in
+            // Clear toggle objects in scroll view so no duplicates or old data are loaded in
             List<GameObject> headerRemove = new List<GameObject>();
             foreach (Transform headerToggle in HeaderCheckboxContent.transform)
             {
@@ -230,6 +232,7 @@ public class CreateObj : MonoBehaviour
             //DataLoadCanvas.transform.GetChild(1).AddComponent<DataPoint_Model>();
             //DataLoadCanvas.transform.GetChild(1).GetComponent<DataPoint_Model>().Band_Names = headers;
             CSVDataLoaded = true;
+            Swap_To_Canvas(DataLoadCanvas);
         }
         catch (IOException ioe)
         {
@@ -625,6 +628,28 @@ public class CreateObj : MonoBehaviour
             if (enabledCanv != MainCanvas)
             {
                 enabledCanv.enabled = false;
+            }
+        }
+        if (canv == DataLoadCanvas && !CSVDataLoaded)
+        {
+            try
+            {
+                HeaderCheckboxContent.transform.parent.parent.gameObject.SetActive(false);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An exception has occurred: {ex.Message} If this crashes the program, please alert developers.", "Error Swapping to Data Load", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+        else
+        {
+            try
+            {
+                HeaderCheckboxContent.transform.parent.parent.gameObject.SetActive(true);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An exception has occurred: {ex.Message} If this crashes the program, please alert developers.", "Error Swapping to Data Load", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
         canv.enabled = true;
